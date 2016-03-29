@@ -13,7 +13,7 @@ class Camera():
         self.vc.set(cv2.CAP_PROP_FRAME_HEIGHT, int(self.frame_shape[1]))
         self.vc.set(cv2.CAP_PROP_FRAME_WIDTH, int(self.frame_shape[0]))
     def run(self, dur, name):
-        vw = cv2.VideoWriter(name+'.avi', cv2.VideoWriter_fourcc(*'MJPG'), self.fps, self.frame_shape)
+        vw = cv2.VideoWriter(name+'.avi', cv2.VideoWriter_fourcc(*'MJPG'), self.fps, tuple(self.frame_shape))
         tsfile = open(name+'.timestamps', 'a')
 
         t0 = time.clock()
@@ -22,7 +22,8 @@ class Camera():
             ts = time.clock()
             if not val:
                 continue
-            fr = cv2.cvtColor(fr, cv2.COLOR_BGR2GRAY).astype(np.uint8)
+            #fr = cv2.cvtColor(fr, cv2.COLOR_BGR2GRAY).astype(np.uint8)
+            fr = fr.astype(np.uint8)
             vw.write(fr)
             tsfile.write('{:0.10f}\n'.format(ts))
 
